@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<script>
+	window.addEventListener('load',function(){
+		var elements = document.getElementsByTagName('button');
+		var n = elements.length;
+		for (var i = 0; i < n; i++) {
+			//We create a new lexical scope that bounds the i variable
+			//to the current value.
+			(function(i) {
+		    	elements[i].addEventListener('click',function() {
+					console.log("This is element #" + (i+1));
+		    	});
+			})(i);
+		}
+	});
+</script>
+</head>
+<body>
+	<p><button>button one</button></p>
+	<p><button>button two</button></p>
+	<p><button>button three</button></p>
+	<p><button>button four</button></p>
+
+
+
+</body>
+</html>

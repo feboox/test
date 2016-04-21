@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head></head>
+    <body>
+        <div id="container" style="width : 640px;height:480px;position: relative; border: 1px solid red;">
+            <h1 id="green-title" style="display: none;position : absolute;top:20px;right:20px;">Green</h1>
+            <h1 id="red-title" style="display: none; position : absolute;bottom:20px;right:20px;">Red</h1>
+            <img id="green" src="green.png" style = "position:absolute;top:0;left:0"/>
+            <img id="red" src="red.png" style = "position:absolute;top:0;left:0"/>
+        </div>
+        <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+        <script>
+        $(function() {
+
+          function isEqual(a1, a2) {
+            if(a1.length != a2.length)
+               return false;
+             for(var i = 0; i < a1.length; ++i){
+               if(a1[i] != a2[i])
+                 return false;
+            }
+           return true;
+          }
+
+          function isRed(pixel) {
+            var redColorArray = [255, 0, 0, 255];
+            return isEqual(pixel.data, redColorArray);
+          }
+
+          function isGreen(pixel) {
+            var greenColorArray = [51, 205, 47, 255];
+            return isEqual(pixel.data, greenColorArray);
+          }
+
+          var $container = $('#container');
+          var redImg = $('#red')[0];
+          var greenImg = $('#green')[0];
+          var $redTitle = $('#red-title');
+          var $greenTitle = $('#green-title');
+
+          var canvas = $('<canvas/>')[0];
+          var context = canvas.getContext('2d');
+          canvas.width = $container.width();
+          canvas.height = $container.height();
+          context.drawImage(redImg, 0, 0, redImg.width, redImg.height);
+          context.drawImage(greenImg, 0, 0, greenImg.width, greenImg.height);
+
+          $container.mousemove(function(e) {
+            var offX  = (e.offsetX || e.clientX - $(e.target).offset().left);
+            var offY  = (e.offsetY || e.clientY - $(e.target).offset().top);
+            var pixel = canvas.getContext('2d').getImageData(offX, offY, 1, 1);
+            $redTitle.toggle(isRed(pixel));
+            $greenTitle.toggle(isGreen(pixel));
+         });
+        });
+        </script>
+    </body>
+</html>
